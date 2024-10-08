@@ -31,12 +31,16 @@ public class TakingScreenShot extends BaseClass implements ITestListener {
 		double random = Math.floor(Math.random() * 100);
 		TakesScreenshot ts=(TakesScreenshot)driver;
 		File dest = ts.getScreenshotAs(OutputType.FILE);
-		File fis=new File("/Users/avsukesh/Downloads/Notes/"+random+".png");
+		File fis=new File("/Users/avsukesh/Downloads/Notes"+random+".png");
 		try {
 			FileUtils.copyFile(dest, fis);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (ArithmeticException a) {
+			// TODO Auto-generated catch block
+			a.printStackTrace();
 		}
 		
 	}

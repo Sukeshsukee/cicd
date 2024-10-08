@@ -4,14 +4,18 @@
   <test thread-count="5" name="Test">
 	<groups>
 		<run>
-			<include name="smoke"></include>
+			<include name="smoke"/>
 		</run>
 	</groups>
     <classes>
-      <class name="com.testScript.TestClass"/>
+     
       <class name="com.testScript.Droup3"/>
+
+     
       <class name="com.testScript.GroupExecution"/>
+    
       <class name="com.testScript.Group2"/>
+     
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

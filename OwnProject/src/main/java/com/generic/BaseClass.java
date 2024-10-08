@@ -2,10 +2,15 @@ package com.generic;
 
 
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -27,28 +32,34 @@ public class BaseClass {
 		driver=new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		org.testng.Reporter.log("open browser",true);
+		org.testng.Reporter.log("opening browser",true);
 
 	}
 	@BeforeMethod
-	public void beforeMethod() {
+	public void beforeMethod() throws InvalidFormatException, IOException {
 		
-		driver.get("https://practicetestautomation.com/practice-test-login/");
-		org.testng.Reporter.log("Entering URL",true);
+		FileUtils ls=new FileUtils();
+		String website = ls.loginData("Sheet1", 3, 0);
+		driver.get(website);
+		WebDriverWait wait=new WebDriverWait(driver, 100);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='login-as-test-user app-button app-button-primary']"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='app-button app-button-primary']"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Skip']"))).click();
+		org.testng.Reporter.log("ihmCartWheel_logged_in",true);
+		
 	}
 	@AfterMethod
 	public void afterMethod() {
-		POM pm=new POM(driver);
-		pm.logout();
-		org.testng.Reporter.log("logout",true);
-
+		WebDriverWait wait=new WebDriverWait(driver, 100);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-e2e='ready-to-checkout-button']"))).click();
+		org.testng.Reporter.log("ihmCartWheel_checkout",true);
 	}
 		@AfterClass
 		public void closeBrowser() {
 			
 			
 			driver.quit();
-			org.testng.Reporter.log("closing ",true);
+			org.testng.Reporter.log("closing Shopping window ",true);
 		}
 	}
 
